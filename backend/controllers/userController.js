@@ -1,11 +1,18 @@
 const router = require("express").Router();
-const userRepository = require("../models/User");
+const userService = require("../service/userService");
 
+// Get user by ID
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
 
-  const user = await userRepository.getUserById(+id);
   try {
+    const user = await userService.getUserById(+id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
     res.status(200).json({
       success: true,
       data: user,
@@ -19,9 +26,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Get all users
 router.get("/", async (req, res) => {
   try {
-    const users = await userRepository.getAllUsers();
+    const users = await userService.getAllUsers();
     res.status(200).json({
       success: true,
       data: users,
@@ -35,18 +43,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Add a new user
 router.post("/", async (req, res) => {
   const userData = req.body;
-  const newUser = await userRepository.addUser(userData);
+
   try {
+    const newUser = await userService.addUser(userData);
     res.status(201).json({
       success: true,
       data: newUser,
     });
   } catch (error) {
+    console.error("Error adding user:", error);
     res.status(500).json({
       success: false,
-      message: "Error adding User",
+      message: "Error adding user",
     });
   }
 });

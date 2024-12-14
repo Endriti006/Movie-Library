@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
-const bcrypt = require("bcrypt");
 
 const User = sequelize.define(
   "users",
@@ -12,18 +11,34 @@ const User = sequelize.define(
     },
     name: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     surname: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     username: {
       type: DataTypes.STRING,
+      unique: {
+        msg: "Username must be unique",
+      },
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
+      unique: {
+        msg: "Email must be unique",
+      },
+      allowNull: false,
+      validate: {
+        isEmail: {
+          msg: "Must be a valid email address",
+        },
+      },
     },
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {
@@ -31,35 +46,4 @@ const User = sequelize.define(
   }
 );
 
-exports.getAllUsers = async () => {
-  try {
-    const users = await User.findAll();
-    return users;
-  } catch (err) {
-    console.error("Error fetching users: ", err);
-  }
-};
-
-exports.getUserById = async (id) => {
-  try {
-    const user = await User.findByPk(id);
-    if (!user) return null;
-    return user;
-  } catch (err) {
-    console.error("Error finding User: ", err);
-  }
-};
-
-exports.addUser = async (userData) => {
-  try {
-    const hashedPaswword = await bcrypt.hash(userData.password, 10);
-
-    const newUser = await User.create({
-      ...userData,
-      password: hashedPaswword,
-    });
-    return newUser;
-  } catch (error) {
-    console.error("Error adding user: ", error);
-  }
-};
+module.exports = User;
