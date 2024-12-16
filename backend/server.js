@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const userController = require("./controllers/userController");
 const sequelize = require("./database/db");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -16,8 +16,8 @@ app.use(
 
 app.use(express.json());
 
+app.use("/users", userRoutes);
 
-app.use("/users", userController);
 
 const PORT = 8585;
 
