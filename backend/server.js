@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const userController = require("./controllers/userController");
 const sequelize = require("./database/db");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -16,10 +16,9 @@ app.use(
 
 app.use(express.json());
 
-// Routes
-app.use("/users", userController);
+app.use("/users", userRoutes);
 
-// Database connection and server startup
+
 const PORT = 8585;
 
 const startServer = async () => {
@@ -41,13 +40,13 @@ const startServer = async () => {
   }
 };
 
-// Handle uncaught exceptions
+
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
   process.exit(1);
 });
 
-// Handle unhandled promise rejections
+
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);

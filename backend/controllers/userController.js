@@ -1,65 +1,75 @@
-const router = require("express").Router();
-const userService = require("../service/userService");
+const User = require("../models/User")
 
-// Get user by ID
-router.get("/:id", async (req, res) => {
-  const id = req.params.id;
-
+const createUser = async (req, res) => {
   try {
-    const user = await userService.getUserById(+id);
+    const { name, surname, username, email, password } = req.body;
+    const user = await User.create({ name, surname, username, email, password });
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getUserByUsername = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ where: { username } });
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
+      return res.status(404).json({ error: "User not found" });
     }
-    res.status(200).json({
-      success: true,
-      data: user,
-    });
+    res.status(200).json(user);
   } catch (error) {
-    console.error("Error getting user:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error getting user",
-    });
+    res.status(500).json({ error: error.message });
   }
-});
+};
 
-// Get all users
-router.get("/", async (req, res) => {
+
+const updateUserByUsername = async (req, res) => {
   try {
-    const users = await userService.getAllUsers();
-    res.status(200).json({
-      success: true,
-      data: users,
-    });
+    const { username } = req.params;
+    const { name, surname, email, password } = req.body;
+
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await user.update({ name, surname, email, password });
+    res.status(200).json(user);
   } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error fetching users",
-    });
+    res.status(400).json({ error: error.message });
   }
-});
+};
 
-// Add a new user
-router.post("/", async (req, res) => {
-  const userData = req.body;
 
+const deleteUserByUsername = async (req, res) => {
   try {
-    const newUser = await userService.addUser(userData);
-    res.status(201).json({
-      success: true,
-      data: newUser,
-    });
-  } catch (error) {
-    console.error("Error adding user:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error adding user",
-    });
-  }
-});
+    const { username } = req.params;
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-module.exports = router;
+    await user.destroy();
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  createUser,
+  getAllUsers,
+  getUserByUsername,
+  updateUserByUsername,
+  deleteUserByUsername,
+};
