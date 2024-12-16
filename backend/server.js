@@ -5,7 +5,7 @@ const sequelize = require("./database/db");
 
 const app = express();
 
-// Middleware
+
 app.use(
   cors({
     origin: "http://localhost:5173", 
@@ -16,15 +16,13 @@ app.use(
 
 app.use(express.json());
 
-// Routes
+
 app.use("/users", userController);
 
-// Database connection and server startup
 const PORT = 8585;
 
 const startServer = async () => {
   try {
-    // Test database connection
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
 
@@ -41,17 +39,16 @@ const startServer = async () => {
   }
 };
 
-// Handle uncaught exceptions
+
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
   process.exit(1);
 });
 
-// Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
 
-// Start the server
+
 startServer();
