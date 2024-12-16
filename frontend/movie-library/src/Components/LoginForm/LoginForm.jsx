@@ -6,80 +6,49 @@ const LoginForm = () => {
     const [showPassword, setShowPassword] = useState({ password: false, confirmPassword: false });
     const [isRegister, setIsRegister] = useState(false);
     const [formData, setFormData] = useState({ username: "", password: "", confirmPassword: "" });
-    const [registrationSuccess, setRegistrationSuccess] = useState(false);
-    const [loginError, setLoginError] = useState("");
-    const [popupMessage, setPopupMessage] = useState("");
 
-    const handleClick = (field) => {
-        setShowPassword(previousState => ({ ...previousState, [field]: !previousState[field] }));
-    }
+    const handleTogglePassword = (field) => {
+        setShowPassword((prevState) => ({ ...prevState, [field]: !prevState[field] }));
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(previousFormData => ({ ...previousFormData, [name]: value }));
-    }
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
 
     const toggleForm = () => {
-        setIsRegister(previousIsRegister => {
-            setShowPassword({ password: false, confirmPassword: false });
+        setIsRegister((prevIsRegister) => {
             setFormData({ username: "", password: "", confirmPassword: "" });
-            setRegistrationSuccess(false);
-            setLoginError("");
-            setPopupMessage("");
-            return !previousIsRegister;
+            setShowPassword({ password: false, confirmPassword: false });
+            return !prevIsRegister;
         });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         if (isRegister) {
             if (formData.password !== formData.confirmPassword) {
-                setLoginError("Passwords do not match!");
+                alert("Passwords do not match!");
                 return;
             }
 
-            // Save registration data to localStorage
-            localStorage.setItem('user', JSON.stringify({
-                username: formData.username,
-                password: formData.password
-            }));
-
-            setRegistrationSuccess(true);
+            localStorage.setItem('user', JSON.stringify({ username: formData.username, password: formData.password }));
+            alert("Registration successful! Check your email for a verification link.");
             setFormData({ username: "", password: "", confirmPassword: "" });
-            setPopupMessage("Registration successful! Check your email for a verification link.");
         } else {
-            // Handle login process
             const storedUser = JSON.parse(localStorage.getItem('user'));
 
             if (storedUser && storedUser.username === formData.username && storedUser.password === formData.password) {
-                // Login successful
-                setLoginError("");
-                setPopupMessage("You are logged in!");
+                alert("You are logged in!");
             } else {
-                // Login failed
-                setLoginError("Invalid username or password");
-                setPopupMessage("Incorrect username or password.");
+                alert("Invalid username or password.");
             }
         }
     };
 
     return (
         <div className="wrapper">
-            {popupMessage && (
-                <div className={`popup-message ${loginError ? 'error' : 'success'}`}>
-                    {popupMessage}
-                </div>
-            )}
-            {registrationSuccess && (
-                <div className="success-message">
-                    Check your email for a verification link.
-                </div>
-            )}
-            {loginError && (
-                <div className="error-message">
-                    {loginError}
-                </div>
-            )}
             <form onSubmit={handleSubmit}>
                 <h1>{isRegister ? "Register" : "Login"}</h1>
                 <div className="input-box">
@@ -103,7 +72,7 @@ const LoginForm = () => {
                         required
                     />
                     <FaLock className="icon" />
-                    <div className="icons" onClick={() => handleClick('password')}>
+                    <div className="icons" onClick={() => handleTogglePassword('password')}>
                         {showPassword.password ? <FaEyeSlash /> : <FaEye />}
                     </div>
                 </div>
@@ -118,15 +87,11 @@ const LoginForm = () => {
                             required
                         />
                         <FaLock className="icon" />
-                        <div className="icons" onClick={() => handleClick('confirmPassword')}>
+                        <div className="icons" onClick={() => handleTogglePassword('confirmPassword')}>
                             {showPassword.confirmPassword ? <FaEyeSlash /> : <FaEye />}
                         </div>
                     </div>
                 )}
-                <div className="remember-forgot">
-                    <label><input type="checkbox" />Remember Me</label>
-                    <a href="#">Forgot password?</a>
-                </div>
                 <button type="submit">{isRegister ? "Register" : "Login"}</button>
                 <div className="register-link">
                     <p>{isRegister ? "Already have an account?" : "Don't have an account?"}
@@ -136,6 +101,6 @@ const LoginForm = () => {
             </form>
         </div>
     );
-}
+};
 
 export default LoginForm;
