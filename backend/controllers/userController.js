@@ -1,9 +1,20 @@
 const User = require("../models/User")
 
+const bcrypt = require("bcrypt");
+
 const createUser = async (req, res) => {
   try {
     const { name, surname, username, email, password } = req.body;
-    const user = await User.create({ name, surname, username, email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      surname,
+      username,
+      email,
+      password: hashedPassword,
+    });
+
     res.status(201).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
