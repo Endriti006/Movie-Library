@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import './LoginForm.css';
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import api from "../../api";
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState({ password: false, confirmPassword: false });
@@ -24,26 +25,45 @@ const LoginForm = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (isRegister) {
-            if (formData.password !== formData.confirmPassword) {
-                alert("Passwords do not match!");
-                return;
-            }
+        try {
+            if (isRegister) {
+                // SIGN-UP LOGIC (Register)
+                if (formData.password !== formData.confirmPassword) {
+                    alert("Passwords do not match!");
+                    return;
+                }
 
-            localStorage.setItem('user', JSON.stringify({ username: formData.username, password: formData.password }));
-            alert("Registration successful! Check your email for a verification link.");
-            setFormData({ username: "", password: "", confirmPassword: "" });
-        } else {
-            const storedUser = JSON.parse(localStorage.getItem('user'));
+                const response = await api.post("/", {
+                    name: formData.username, // Example: using username as "name" placeholder
+                    surname: "User",         // Placeholder surname
+                    username: formData.username,
+                    email: `${formData.username}@example.com`, // Example email
+                    password: formData.password,
+                });
 
-            if (storedUser && storedUser.username === formData.username && storedUser.password === formData.password) {
-                alert("You are logged in!");
+                console.log("Registration Response:", response.data);
+                alert("Registration successful! Please log in.");
+                setFormData({ username: "", password: "", confirmPassword: "" });
+                setIsRegister(false);
             } else {
-                alert("Invalid username or password.");
+                // SIGN-IN LOGIC (Login)
+                const response = await api.post("/login", {
+                    email: `${formData.username}@example.com`, // Example email format
+                    password: formData.password,
+                });
+
+                console.log("Login Response:", response.data);
+                alert("You are logged in!");
+
+                // Store JWT token in localStorage
+                localStorage.setItem("token", response.data.token);
             }
+        } catch (error) {
+            console.error("Error:", error.response ? error.response.data : error.message);
+            alert(error.response?.data?.error || "An error occurred.");
         }
     };
 
@@ -94,8 +114,9 @@ const LoginForm = () => {
                 )}
                 <button type="submit">{isRegister ? "Register" : "Login"}</button>
                 <div className="register-link">
-                    <p>{isRegister ? "Already have an account?" : "Don't have an account?"}
-                        <a href="#" onClick={toggleForm}>{isRegister ? "Login" : "Register"}</a>
+                    <p>
+                        {isRegister ? "Already have an account?" : "Don't have an account?"}
+                        <a href="#" onClick={toggleForm}>{isRegister ? " Login" : " Register"}</a>
                     </p>
                 </div>
             </form>
