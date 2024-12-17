@@ -1,7 +1,5 @@
-// Load environment variables from .env file
 require('dotenv').config();
 
-// Your other imports and setup
 const express = require("express");
 const cors = require("cors");
 const sequelize = require("./database/db");
@@ -14,7 +12,7 @@ app.use(passport.initialize());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: "http://localhost:3000", 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
