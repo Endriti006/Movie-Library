@@ -1,0 +1,124 @@
+.app {
+    background-color: #141414;
+    color: white;
+    min-height: 100vh;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+  }
+  
+  .nav-logo {
+    height: 25px;
+    object-fit: contain;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .nav-right {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .nav-button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .content {
+    padding-top: 70px;
+  }
+  
+  .content-row {
+    margin: 20px 0;
+    padding: 0 40px;
+  }
+  
+  .content-row h2 {
+    margin-bottom: 10px;
+  }
+  
+  .row-posters {
+    display: flex;
+    overflow-x: scroll;
+    padding: 20px 0;
+    gap: 10px;
+  }
+  
+  .row-posters::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .poster-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  
+  .poster-wrapper:hover {
+    transform: scale(1.08);
+  }
+  
+  .row-poster {
+    width: 200px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  
+  .poster-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .poster-wrapper:hover .poster-overlay {
+    opacity: 1;
+  }
+  
+  .poster-overlay h3 {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 10px 20px;
+    }
+    
+    .nav-links {
+      display: none;
+    }
+    
+    .content-row {
+      padding: 0 20px;
+    }
+    
+    .row-poster {
+      width: 150px;
+    }
+  }

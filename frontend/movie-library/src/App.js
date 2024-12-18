@@ -2,7 +2,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LoginForm from "./Components/LoginForm/LoginForm";
-import ProtectedPage from "../src/Components/ProtectedPage";
+import HomePage from "../src/Components/HomePage";
 
 const App = () => {
     const isAuthenticated = !!localStorage.getItem("token");
@@ -13,7 +13,7 @@ const App = () => {
                 <Route path="/login" element={<LoginForm />} />
                 <Route
                     path="/protected"
-                    element={isAuthenticated ? <ProtectedPage /> : <Navigate to="/login" />}
+                    element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
                 />
                 <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
