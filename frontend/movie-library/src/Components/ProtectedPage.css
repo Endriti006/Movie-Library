@@ -1,0 +1,12 @@
+.protected-page {
+    background-image: url('./Assets/background.jpg'); /* Update with your actual image path */
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    width: 100vw;
+}
