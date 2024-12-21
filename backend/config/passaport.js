@@ -9,11 +9,11 @@ const options = {
 
 const jwtStrategy = new JwtStrategy(options, async (payload, done) => {
   try {
-    const user = await User.findByPk(payload.id); // Fetch user by ID
+    const user = await User.findByPk(payload.id);
     if (user) {
       return done(null, user);
     }
-    return done(null, false); // No user found
+    return done(null, false); 
   } catch (error) {
     return done(error, false);
   }
