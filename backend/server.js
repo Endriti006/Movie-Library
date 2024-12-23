@@ -5,7 +5,9 @@ const cors = require("cors");
 const sequelize = require("./database/db");
 const userRoutes = require("./routes/userRoutes");
 const passport = require("./config/passaport");
-
+const genreRoutes = require("./routes/genreRoutes")
+const movieRoutes = require("./routes/movieRoutes")
+const ratingRoutes = require("./routes/ratingRoutes")
 const app = express();
 
 app.use(passport.initialize());
@@ -21,6 +23,12 @@ app.use(
 app.use(express.json());
 
 app.use("/users", userRoutes);
+
+app.use("/genres", genreRoutes);
+
+app.use("/movies", movieRoutes);
+
+app.use("/ratings", ratingRoutes);
 
 const PORT = 8585;
 
