@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
+import GenresDropdown from './Genre/GenresDropdown';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const HomePage = () => {
       image: 'https://m.media-amazon.com/images/M/MV5BNmFjODU3YzgtMGUwNC00ZGI3LWFkZjQtMjkxZDc3NmQ1MzcyXkEyXkFqcGdeQXVyNjUwNzk3NDc@._V1_.jpg',
     },
   ];
-  
+
   // My List section
   const myList = [
     {
@@ -71,7 +72,7 @@ const HomePage = () => {
       image: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg',
     },
   ];
-  
+
   // Popular on Netflix section
   const popular = [
     {
@@ -134,21 +135,15 @@ const HomePage = () => {
         <img src="netflix-logo.png" alt="Netflix" className="nav-logo" />
         <div className="nav-links">
           <a href="#home">Home</a>
-          <a href="#tvshows">TV Shows</a>
-          <a href="#movies">Movies</a>
-          <a href="#new">New & Popular</a>
-          <a href="#mylist">My List</a>
-          <a href="#genres">Genres</a>
+          <GenresDropdown />
         </div>
         <div className="nav-right">
-          <button 
+          <button
             className="nav-button children-btn"
             onClick={() => setShowLogoutModal(true)}
           >
-            Logut
+            Logout
           </button>
-          <button className="nav-button">🎁</button>
-          <button className="nav-button">🔔</button>
           <button className="nav-button">👤</button>
         </div>
       </nav>
@@ -173,7 +168,7 @@ const HomePage = () => {
                 <span>Logout</span>
               </button>
             </div>
-            <button 
+            <button
               className="close-modal"
               onClick={() => setShowLogoutModal(false)}
             >

@@ -41,13 +41,22 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    img_url: {
+      type: DataTypes.STRING,
+      allowNull: true, // Allows the field to be optional
+      validate: {
+        isUrl: {
+          msg: "Must be a valid URL",
+        },
+      },
+    },
   },
   {
     timestamps: false,
   }
 );
 
-// Genre Model
+
 const Genre = sequelize.define(
   "genres",
   {
