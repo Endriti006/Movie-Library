@@ -103,6 +103,21 @@
     margin: 0;
     font-size: 14px;
   }
+
+  .nav-button {
+    padding: 10px 20px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .nav-button:hover {
+    background-color: #b20710;
+  }
+  
   
   @media (max-width: 768px) {
     .navbar {

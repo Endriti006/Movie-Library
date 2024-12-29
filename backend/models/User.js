@@ -41,22 +41,13 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    img_url: {
-      type: DataTypes.STRING,
-      allowNull: true, // Allows the field to be optional
-      validate: {
-        isUrl: {
-          msg: "Must be a valid URL",
-        },
-      },
-    },
   },
   {
     timestamps: false,
   }
 );
 
-
+// Genre Model
 const Genre = sequelize.define(
   "genres",
   {
@@ -107,11 +98,16 @@ const Movie = sequelize.define(
         key: "id",
       },
     },
+    imgUrl: {
+      type: DataTypes.STRING,  // Assuming you're storing a URL as a string
+      allowNull: true,  // You can make it nullable if the image URL is optional
+    },
   },
   {
     timestamps: false,
   }
 );
+
 
 
 const Rating = sequelize.define(
@@ -166,11 +162,4 @@ Rating.belongsTo(Movie, { foreignKey: "movieId" });
 User.hasMany(Rating, { foreignKey: "userId" });
 Rating.belongsTo(User, { foreignKey: "userId" });
 
-module.exports = {
-  User,
-  Genre,
-  Movie,
-  Rating
-};
-
-
+module.exports = { User, Genre, Movie, Rating };

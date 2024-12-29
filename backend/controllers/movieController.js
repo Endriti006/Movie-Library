@@ -1,8 +1,7 @@
 const { Movie, Genre } = require("../models/User");
 
-
 const createMovie = async (req, res) => {
-  const { title, description, releaseDate, genreId } = req.body;
+  const { title, description, releaseDate, genreId, imgUrl } = req.body;  // Add imgUrl
 
   if (!title || !releaseDate || !genreId) {
     return res.status(400).json({ message: "Title, release date, and genre ID are required" });
@@ -14,7 +13,7 @@ const createMovie = async (req, res) => {
       return res.status(404).json({ message: "Genre not found" });
     }
 
-    const newMovie = await Movie.create({ title, description, releaseDate, genreId });
+    const newMovie = await Movie.create({ title, description, releaseDate, genreId, imgUrl });  // Include imgUrl
     res.status(201).json(newMovie);
   } catch (error) {
     res.status(500).json({ message: "Error creating movie", error: error.message });
@@ -37,7 +36,7 @@ const getAllMovies = async (req, res) => {
 
 const updateMovie = async (req, res) => {
   const { id } = req.params;
-  const { title, description, releaseDate, genreId } = req.body;
+  const { title, description, releaseDate, genreId, imgUrl } = req.body;  // Add imgUrl
 
   try {
     const movie = await Movie.findByPk(id);
@@ -53,13 +52,12 @@ const updateMovie = async (req, res) => {
       }
     }
 
-    await movie.update({ title, description, releaseDate, genreId });
+    await movie.update({ title, description, releaseDate, genreId, imgUrl });  // Include imgUrl
     res.status(200).json(movie);
   } catch (error) {
     res.status(500).json({ message: "Error updating movie", error: error.message });
   }
 };
-
 
 const deleteMovie = async (req, res) => {
   const { id } = req.params;
