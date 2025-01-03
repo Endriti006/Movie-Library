@@ -1,138 +1,283 @@
 .app {
-    background-color: #141414;
-    color: white;
-    min-height: 100vh;
-  }
-  
+  background-color: #141414;
+  color: white;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  z-index: 1;
+}
+
+.nav-logo {
+  height: 25px;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav-right {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-button {
+  padding: 10px 20px;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.nav-button:hover {
+  background-color: #b20710;
+}
+
+.content {
+  padding-top: 70px;
+}
+
+.content-row {
+  margin: 20px 0;
+  padding: 0 40px;
+}
+
+.content-row h2 {
+  margin-bottom: 10px;
+}
+
+.row-posters {
+  padding: 20px 0;
+  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.row-posters::-webkit-scrollbar {
+  display: none;
+}
+
+.poster-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+  cursor: pointer;
+  width: 200px;
+  margin: 10px;
+}
+
+.poster-wrapper:hover {
+  transform: scale(1.15);
+  z-index: 2;
+}
+
+.row-poster {
+  width: 200px;
+  height: 300px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.poster-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 60%, rgba(0,0,0,0) 100%);
+  padding: 15px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  min-height: 50%;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.poster-wrapper:hover .poster-overlay {
+  opacity: 1;
+}
+
+.poster-overlay h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.movie-info {
+  font-size: 14px;
+}
+
+.release-date {
+  color: #46d369;
+  margin: 4px 0;
+}
+
+.genre {
+  color: #ddd;
+  margin: 4px 0;
+}
+
+.description {
+  color: #999;
+  font-size: 12px;
+  margin: 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.logout-modal {
+  background-color: #141414;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  min-width: 300px;
+}
+
+.profile-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.profile-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.profile-icon {
+  font-size: 20px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* MovieForm Styles */
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.movie-form {
+  background-color: #242424;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background-color: #333;
+  color: white;
+}
+
+.error-message {
+  color: #e50914;
+  margin-bottom: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
   .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-    top: 0;
-    width: 100%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-    z-index: 1;
-  }
-  
-  .nav-logo {
-    height: 25px;
-    object-fit: contain;
+      padding: 10px 20px;
   }
   
   .nav-links {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-  }
-  
-  .nav-right {
-    display: flex;
-    gap: 15px;
-  }
-  
-  .nav-button {
-    background: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .content {
-    padding-top: 70px;
+      display: none;
   }
   
   .content-row {
-    margin: 20px 0;
-    padding: 0 40px;
-  }
-  
-  .content-row h2 {
-    margin-bottom: 10px;
-  }
-  
-  .row-posters {
-    display: flex;
-    overflow-x: scroll;
-    padding: 20px 0;
-    gap: 10px;
-  }
-  
-  .row-posters::-webkit-scrollbar {
-    display: none;
+      padding: 0 20px;
   }
   
   .poster-wrapper {
-    position: relative;
-    flex-shrink: 0;
-    transition: transform 0.3s;
-    cursor: pointer;
-  }
-  
-  .poster-wrapper:hover {
-    transform: scale(1.08);
+      width: 150px;
   }
   
   .row-poster {
-    width: 200px;
-    border-radius: 4px;
-    object-fit: cover;
-  }
-  
-  .poster-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .poster-wrapper:hover .poster-overlay {
-    opacity: 1;
+      width: 150px;
+      height: 225px;
   }
   
   .poster-overlay h3 {
-    margin: 0;
-    font-size: 14px;
-  }
-
-  .nav-button {
-    padding: 10px 20px;
-    background-color: #e50914;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+      font-size: 14px;
   }
   
-  .nav-button:hover {
-    background-color: #b20710;
+  .movie-info {
+      font-size: 12px;
   }
   
-  
-  @media (max-width: 768px) {
-    .navbar {
-      padding: 10px 20px;
-    }
-    
-    .nav-links {
-      display: none;
-    }
-    
-    .content-row {
-      padding: 0 20px;
-    }
-    
-    .row-poster {
-      width: 150px;
-    }
+  .description {
+      font-size: 10px;
+      -webkit-line-clamp: 2;
   }
+}

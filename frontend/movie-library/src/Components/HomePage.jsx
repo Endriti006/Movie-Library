@@ -1,60 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './HomePage.css';
 import GenresDropdown from './Genre/GenresDropdown';
+import MovieCard from './MovieCard';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [movies, setMovies] = useState([]); 
-
+  const [movies, setMovies] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(null);
+  const [filteredMovies, setFilteredMovies] = useState([]);
 
   const fetchMovies = async () => {
     try {
       const response = await fetch('http://localhost:8585/movies');
       const data = await response.json();
-      setMovies(data); 
+      setMovies(data);
+      setFilteredMovies(data);
     } catch (error) {
       console.error('Error fetching movies:', error);
     }
   };
 
+  const handleGenreSelect = async (genreId) => {
+    setSelectedGenre(genreId);
+  
+    if (!genreId) {
+      setFilteredMovies(movies); 
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:8585/movies/genre/${genreId}`); 
+      const data = await response.json();
+      setFilteredMovies(data);
+    } catch (error) {
+      console.error("Error fetching movies by genre:", error);
+    }
+  };
   useEffect(() => {
-    fetchMovies(); 
+    fetchMovies();
   }, []);
 
   const handleLogout = () => {
-    console.log("logut");
     localStorage.removeItem('token');
     navigate('/login');
   };
 
-  const ContentRow = ({ title, items }) => (
-    <div className="content-row">
-      <h2>{title}</h2>
-      <div className="row-posters">
-        {items.map((item) => (
-          <div key={item.id} className="poster-wrapper">
-            <img src={item.imgUrl} alt={item.title} className="row-poster" />
-            <div className="poster-overlay">
-              <h3>{item.title}</h3>
-            </div>
-          </div>
-        ))}
+  const ContentRow = ({ title, items }) => {
+    const handleRateMovie = async (movieId, rating) => {
+      try {
+        // Add your API call here to save the rating
+        const response = await fetch(`http://localhost:8585/movies/${movieId}/rate`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ rating }),
+        });
+        // Handle the response as needed
+      } catch (error) {
+        console.error('Error rating movie:', error);
+      }
+    };
+  
+    return (
+      <div className="content-row">
+        <h2>{title}</h2>
+        <div className="row-posters">
+          {items.map((item) => (
+            <MovieCard 
+              key={item.id} 
+              movie={item} 
+              onRateMovie={handleRateMovie}
+            />
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="app">
       <nav className="navbar">
         <img src="netflix-logo.png" alt="Netflix" className="nav-logo" />
         <div className="nav-links">
-        <button onClick={() => navigate('/add-movie')} className="nav-button">
+          <button onClick={() => navigate('/add-movie')} className="nav-button">
             Add Movie
           </button>
           <a href="#home">Home</a>
-          <GenresDropdown />
+          <GenresDropdown onGenreSelect={handleGenreSelect} />
         </div>
         <div className="nav-right">
           <button
@@ -68,9 +103,10 @@ const HomePage = () => {
       </nav>
 
       <div className="content">
-        <ContentRow title="Continue Watching" items={movies} />
-        <ContentRow title="My List" items={movies} />
-        <ContentRow title="Popular on Netflix" items={movies} />
+        <ContentRow 
+          title={selectedGenre ? "Genre Movies" : "All Movies"} 
+          items={filteredMovies} 
+        />
       </div>
 
       {showLogoutModal && (
@@ -82,7 +118,7 @@ const HomePage = () => {
                 <span className="profile-icon">👤</span>
                 <span>Switch Profile</span>
               </button>
-              <button className="profile-button" onClick={handleLogout()}>
+              <button className="profile-button" onClick={handleLogout}>
                 <span className="profile-icon">🚪</span>
                 <span>Logout</span>
               </button>

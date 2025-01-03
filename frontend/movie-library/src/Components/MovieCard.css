@@ -1,0 +1,36 @@
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 8px 0;
+  }
+  
+  .star-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .star-button:hover {
+    transform: scale(1.2);
+  }
+  
+  .star-icon {
+    transition: all 0.2s;
+  }
+  
+  .rating-text {
+    margin-left: 8px;
+    color: gold;
+    font-size: 12px;
+  }
+
+  .average-rating {
+    margin-left: 8px;
+    color: #ffd700;
+    font-size: 12px;
+    border-left: 1px solid #666;
+    padding-left: 8px;
+  }

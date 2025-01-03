@@ -1,7 +1,7 @@
 const { Movie, Genre } = require("../models/User");
 
 const createMovie = async (req, res) => {
-  const { title, description, releaseDate, genreId, imgUrl } = req.body;  // Add imgUrl
+  const { title, description, releaseDate, genreId, imgUrl } = req.body;
 
   if (!title || !releaseDate || !genreId) {
     return res.status(400).json({ message: "Title, release date, and genre ID are required" });
@@ -13,9 +13,10 @@ const createMovie = async (req, res) => {
       return res.status(404).json({ message: "Genre not found" });
     }
 
-    const newMovie = await Movie.create({ title, description, releaseDate, genreId, imgUrl });  // Include imgUrl
+    const newMovie = await Movie.create({ title, description, releaseDate, genreId, imgUrl });
     res.status(201).json(newMovie);
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ message: "Error creating movie", error: error.message });
   }
 };
@@ -25,18 +26,19 @@ const getAllMovies = async (req, res) => {
     const movies = await Movie.findAll({
       include: {
         model: Genre,
-        attributes: ["id", "name"], 
+        attributes: ["id", "name"],
       },
     });
     res.status(200).json(movies);
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ message: "Error fetching movies", error: error.message });
   }
 };
 
 const updateMovie = async (req, res) => {
   const { id } = req.params;
-  const { title, description, releaseDate, genreId, imgUrl } = req.body;  // Add imgUrl
+  const { title, description, releaseDate, genreId, imgUrl } = req.body;
 
   try {
     const movie = await Movie.findByPk(id);
@@ -52,9 +54,10 @@ const updateMovie = async (req, res) => {
       }
     }
 
-    await movie.update({ title, description, releaseDate, genreId, imgUrl });  // Include imgUrl
+    await movie.update({ title, description, releaseDate, genreId, imgUrl });
     res.status(200).json(movie);
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ message: "Error updating movie", error: error.message });
   }
 };
@@ -72,7 +75,31 @@ const deleteMovie = async (req, res) => {
     await movie.destroy();
     res.status(200).json({ message: "Movie deleted successfully" });
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ message: "Error deleting movie", error: error.message });
+  }
+};
+
+const getMoviesByGenre = async (req, res) => {
+  const { genreId } = req.params;
+
+  try {
+    const movies = await Movie.findAll({
+      where: { genreId },
+      include: {
+        model: Genre,
+        attributes: ["id", "name"],
+      },
+    });
+
+    if (movies.length === 0) {
+      return res.status(404).json({ message: "No movies found for this genre" });
+    }
+
+    res.status(200).json(movies);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Error fetching movies by genre", error: error.message });
   }
 };
 
@@ -81,4 +108,5 @@ module.exports = {
   getAllMovies,
   updateMovie,
   deleteMovie,
+  getMoviesByGenre,
 };

@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './GenresDropdown.css';
 
-const GenresDropdown = () => {
+const GenresDropdown = ({ onGenreSelect }) => {
   const [genres, setGenres] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
     fetchGenres();
-    // Add click event listener to close dropdown when clicking outside
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -29,12 +28,14 @@ const GenresDropdown = () => {
     }
   };
 
+  const handleGenreClick = (genreId) => {
+    onGenreSelect(genreId);
+    setIsOpen(false);
+  };
+
   return (
     <div className="genres-dropdown" ref={dropdownRef}>
-      <button
-        className="genres-button"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <button className="genres-button" onClick={() => setIsOpen(!isOpen)}>
         Genres
         <svg
           className={`dropdown-arrow ${isOpen ? 'open' : ''}`}
@@ -56,11 +57,25 @@ const GenresDropdown = () => {
       {isOpen && (
         <div className="genres-menu">
           <div className="genres-grid">
+            <a
+              href="#"
+              className="genre-item"
+              onClick={(e) => {
+                e.preventDefault();
+                handleGenreClick(null);
+              }}
+            >
+              All Movies
+            </a>
             {genres.map((genre) => (
               <a
                 key={genre.id}
-                href={`/genre/${genre.id}`}
+                href="#"
                 className="genre-item"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleGenreClick(genre.id);
+                }}
               >
                 {genre.name}
               </a>
