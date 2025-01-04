@@ -51,7 +51,7 @@ const HomePage = () => {
     const handleRateMovie = async (movieId, rating) => {
       try {
         // Add your API call here to save the rating
-        const response = await fetch(`http://localhost:8585/movies/${movieId}/rate`, {
+        const response = await fetch(`http://localhost:8585/rating`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
