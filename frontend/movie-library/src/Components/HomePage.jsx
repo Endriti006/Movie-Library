@@ -50,90 +50,96 @@ const HomePage = () => {
   const ContentRow = ({ title, items }) => {
     const handleRateMovie = async (movieId, rating) => {
       try {
-        // Add your API call here to save the rating
-        const response = await fetch(`http://localhost:8585/rating`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ rating }),
-        });
-        // Handle the response as needed
+          const userId = localStorage.getItem("userId"); 
+          if (!userId) {
+              throw new Error("User is not logged in");
+          }
+          const response = await fetch(`http://localhost:8585/ratings`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId, movieId, rating }),
+          });
+          if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message || "Failed to rate movie");
+          }
       } catch (error) {
-        console.error('Error rating movie:', error);
+          console.error('Error rating movie:', error);
       }
-    };
-  
-    return (
-      <div className="content-row">
-        <h2>{title}</h2>
-        <div className="row-posters">
-          {items.map((item) => (
-            <MovieCard 
-              key={item.id} 
-              movie={item} 
-              onRateMovie={handleRateMovie}
-            />
-          ))}
-        </div>
-      </div>
-    );
   };
-
+  
   return (
-    <div className="app">
-      <nav className="navbar">
-        <img src="netflix-logo.png" alt="Netflix" className="nav-logo" />
-        <div className="nav-links">
-          <button onClick={() => navigate('/add-movie')} className="nav-button">
-            Add Movie
-          </button>
-          <a href="#home">Home</a>
-          <GenresDropdown onGenreSelect={handleGenreSelect} />
-        </div>
-        <div className="nav-right">
-          <button
-            className="nav-button children-btn"
-            onClick={() => setShowLogoutModal(true)}
-          >
-            Logout
-          </button>
-          <button className="nav-button">👤</button>
-        </div>
-      </nav>
-
-      <div className="content">
-        <ContentRow 
-          title={selectedGenre ? "Genre Movies" : "All Movies"} 
-          items={filteredMovies} 
-        />
+    <div className="content-row">
+      <h2>{title}</h2>
+      <div className="row-posters">
+        {items.map((item) => (
+          <MovieCard 
+            key={item.id} 
+            movie={item} 
+            onRateMovie={handleRateMovie}
+          />
+        ))}
       </div>
-
-      {showLogoutModal && (
-        <div className="modal-overlay">
-          <div className="logout-modal">
-            <h2>Profile Options</h2>
-            <div className="profile-options">
-              <button className="profile-button">
-                <span className="profile-icon">👤</span>
-                <span>Switch Profile</span>
-              </button>
-              <button className="profile-button" onClick={handleLogout}>
-                <span className="profile-icon">🚪</span>
-                <span>Logout</span>
-              </button>
-            </div>
-            <button
-              className="close-modal"
-              onClick={() => setShowLogoutModal(false)}
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
+};
+
+return (
+  <div className="app">
+    <nav className="navbar">
+      <img src="netflix-logo.png" alt="Netflix" className="nav-logo" />
+      <div className="nav-links">
+        <button onClick={() => navigate('/add-movie')} className="nav-button">
+          Add Movie
+        </button>
+        <a href="#home">Home</a>
+        <GenresDropdown onGenreSelect={handleGenreSelect} />
+      </div>
+      <div className="nav-right">
+        <button
+          className="nav-button children-btn"
+          onClick={() => setShowLogoutModal(true)}
+        >
+          Logout
+        </button>
+        <button className="nav-button">👤</button>
+      </div>
+    </nav>
+
+    <div className="content">
+      <ContentRow 
+        title={selectedGenre ? "Genre Movies" : "All Movies"} 
+        items={filteredMovies} 
+      />
+    </div>
+
+    {showLogoutModal && (
+      <div className="modal-overlay">
+        <div className="logout-modal">
+          <h2>Profile Options</h2>
+          <div className="profile-options">
+            <button className="profile-button">
+              <span className="profile-icon">👤</span>
+              <span>Switch Profile</span>
+            </button>
+            <button className="profile-button" onClick={handleLogout}>
+              <span className="profile-icon">🚪</span>
+              <span>Logout</span>
+            </button>
+          </div>
+          <button
+            className="close-modal"
+            onClick={() => setShowLogoutModal(false)}
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default HomePage;

@@ -2,7 +2,7 @@ const { Rating, Movie, User } = require("../models/User");
 
 
 const createRating = async (req, res) => {
-  const { userId, movieId, rating, comment } = req.body;
+  const { userId, movieId, rating } = req.body;
 
   if (!userId || !movieId || !rating) {
     return res.status(400).json({ message: "userId, movieId, and rating are required" });
@@ -14,14 +14,12 @@ const createRating = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-
     const movie = await Movie.findByPk(movieId);
     if (!movie) {
       return res.status(404).json({ message: "Movie not found" });
     }
 
-
-    const newRating = await Rating.create({ userId, movieId, rating, comment });
+    const newRating = await Rating.create({ userId, movieId, rating });
     res.status(201).json(newRating);
   } catch (error) {
     res.status(500).json({ message: "Error creating rating", error: error.message });
@@ -52,7 +50,7 @@ const getAllRatings = async (req, res) => {
 
 const updateRating = async (req, res) => {
   const { id } = req.params;
-  const { rating, comment } = req.body;
+  const { rating,  } = req.body;
 
   try {
     const existingRating = await Rating.findByPk(id);
@@ -62,7 +60,7 @@ const updateRating = async (req, res) => {
     }
 
 
-    await existingRating.update({ rating, comment });
+    await existingRating.update({ rating,  });
     res.status(200).json(existingRating);
   } catch (error) {
     res.status(500).json({ message: "Error updating rating", error: error.message });

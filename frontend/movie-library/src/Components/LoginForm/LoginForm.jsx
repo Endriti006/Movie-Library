@@ -29,14 +29,14 @@ const LoginForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
             if (isRegister) {
                 if (formData.password !== formData.confirmPassword) {
                     alert("Passwords do not match!");
                     return;
                 }
-
+    
                 const response = await api.post("/", {
                     name: formData.username,
                     surname: "User",
@@ -44,7 +44,7 @@ const LoginForm = () => {
                     email: `${formData.username}@example.com`,
                     password: formData.password,
                 });
-
+    
                 alert("Registration successful! Please log in.");
                 setFormData({ username: "", password: "", confirmPassword: "" });
                 setIsRegister(false);
@@ -53,8 +53,9 @@ const LoginForm = () => {
                     email: `${formData.username}@example.com`,
                     password: formData.password,
                 });
-
+    
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("userId", response.data.user.id); // Store user ID
                 navigate('/protected'); // Navigate to protected page after login
             }
         } catch (error) {
@@ -62,7 +63,7 @@ const LoginForm = () => {
             alert(error.response?.data?.error || "An error occurred.");
         }
     };
-
+    
     return (
         <div className="wrapper">
             <form onSubmit={handleSubmit}>

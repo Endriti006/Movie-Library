@@ -142,10 +142,6 @@ const Rating = sequelize.define(
         max: 5,
       },
     },
-    comment: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
   },
   {
     timestamps: true, 
