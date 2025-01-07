@@ -7,7 +7,7 @@ import api from "../../api";
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState({ password: false, confirmPassword: false });
     const [isRegister, setIsRegister] = useState(false);
-    const [formData, setFormData] = useState({ username: "", password: "", confirmPassword: "" });
+    const [formData, setFormData] = useState({ email: "", password: "", confirmPassword: "" });
     const navigate = useNavigate(); // Add navigation hook
 
     const handleTogglePassword = (field) => {
@@ -21,7 +21,7 @@ const LoginForm = () => {
 
     const toggleForm = () => {
         setIsRegister((prevIsRegister) => {
-            setFormData({ username: "", password: "", confirmPassword: "" });
+            setFormData({ email: "", password: "", confirmPassword: "" });
             setShowPassword({ password: false, confirmPassword: false });
             return !prevIsRegister;
         });
@@ -38,19 +38,16 @@ const LoginForm = () => {
                 }
     
                 const response = await api.post("/", {
-                    name: formData.username,
-                    surname: "User",
-                    username: formData.username,
-                    email: `${formData.username}@example.com`,
+                    email: formData.email,
                     password: formData.password,
                 });
     
                 alert("Registration successful! Please log in.");
-                setFormData({ username: "", password: "", confirmPassword: "" });
+                setFormData({ email: "", password: "", confirmPassword: "" });
                 setIsRegister(false);
             } else {
                 const response = await api.post("/login", {
-                    email: `${formData.username}@example.com`,
+                    email: formData.email,  
                     password: formData.password,
                 });
     
@@ -71,9 +68,9 @@ const LoginForm = () => {
                 <div className="input-box">
                     <input
                         type="text"
-                        name="username"
-                        placeholder="Username"
-                        value={formData.username}
+                        name="email"
+                        placeholder="email"
+                        value={formData.email}
                         onChange={handleChange}
                         required
                     />

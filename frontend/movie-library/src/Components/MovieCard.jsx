@@ -6,7 +6,8 @@ const MovieCard = ({ movie, onRateMovie }) => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
 
-  const handleRating = (value) => {
+  const handleRating = (e, value) => {
+    e.stopPropagation(); // Add this to prevent event bubbling
     setRating(value);
     if (onRateMovie) {
       onRateMovie(movie.id, value);
@@ -34,7 +35,7 @@ const MovieCard = ({ movie, onRateMovie }) => {
                 className="star-button"
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
-                onClick={() => handleRating(star)}
+                onClick={(e) => handleRating(e, star)} // Pass the event object
               >
                 <Star
                   className="star-icon"
