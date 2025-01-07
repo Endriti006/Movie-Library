@@ -102,6 +102,10 @@ const Movie = sequelize.define(
       type: DataTypes.STRING,  // Assuming you're storing a URL as a string
       allowNull: true,  // You can make it nullable if the image URL is optional
     },
+    trailerUrl: {
+      type: DataTypes.STRING,
+      allowNull: true, // You can make it nullable if the trailer URL is optional
+    },
   },
   {
     timestamps: false,

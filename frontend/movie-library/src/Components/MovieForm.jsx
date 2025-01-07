@@ -9,7 +9,8 @@ const MovieForm = () => {
         description: '',
         releaseDate: '',
         genreId: '',
-        imgUrl: ''
+        imgUrl: '',
+        trailerUrl: '' // Add this line
     });
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -126,6 +127,17 @@ const MovieForm = () => {
                         value={movieData.imgUrl}
                         onChange={(e) => setMovieData({ ...movieData, imgUrl: e.target.value })}
                         placeholder="Enter image URL"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="trailerUrl">Trailer URL</label>
+                    <input
+                        id="trailerUrl"
+                        type="url"
+                        value={movieData.trailerUrl}
+                        onChange={(e) => setMovieData({ ...movieData, trailerUrl: e.target.value })}
+                        placeholder="Enter trailer URL"
                     />
                 </div>
 

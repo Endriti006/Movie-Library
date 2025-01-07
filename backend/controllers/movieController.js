@@ -1,7 +1,7 @@
 const { Movie, Genre } = require("../models/User");
 
 const createMovie = async (req, res) => {
-  const { title, description, releaseDate, genreId, imgUrl } = req.body;
+  const { title, description, releaseDate, genreId, imgUrl, trailerUrl } = req.body;
 
   if (!title || !releaseDate || !genreId) {
     return res.status(400).json({ message: "Title, release date, and genre ID are required" });
@@ -13,7 +13,7 @@ const createMovie = async (req, res) => {
       return res.status(404).json({ message: "Genre not found" });
     }
 
-    const newMovie = await Movie.create({ title, description, releaseDate, genreId, imgUrl });
+    const newMovie = await Movie.create({ title, description, releaseDate, genreId, imgUrl, trailerUrl });
     res.status(201).json(newMovie);
   } catch (error) {
     console.error(error.message);
@@ -38,7 +38,7 @@ const getAllMovies = async (req, res) => {
 
 const updateMovie = async (req, res) => {
   const { id } = req.params;
-  const { title, description, releaseDate, genreId, imgUrl } = req.body;
+  const { title, description, releaseDate, genreId, imgUrl, trailerUrl } = req.body;
 
   try {
     const movie = await Movie.findByPk(id);
@@ -54,7 +54,7 @@ const updateMovie = async (req, res) => {
       }
     }
 
-    await movie.update({ title, description, releaseDate, genreId, imgUrl });
+    await movie.update({ title, description, releaseDate, genreId, imgUrl, trailerUrl });
     res.status(200).json(movie);
   } catch (error) {
     console.error(error.message);

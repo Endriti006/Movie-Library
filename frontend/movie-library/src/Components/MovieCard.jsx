@@ -13,8 +13,14 @@ const MovieCard = ({ movie, onRateMovie }) => {
     }
   };
 
+  const handleTrailerClick = () => {
+    if (movie.trailerUrl) {
+      window.open(movie.trailerUrl, '_blank');
+    }
+  };
+
   return (
-    <div className="poster-wrapper">
+    <div className="poster-wrapper" onClick={handleTrailerClick}>
       <img src={movie.imgUrl} alt={movie.title} className="row-poster" />
       <div className="poster-overlay">
         <h3>{movie.title}</h3>
