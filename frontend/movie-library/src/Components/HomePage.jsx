@@ -89,7 +89,6 @@ const HomePage = () => {
 return (
   <div className="app">
     <nav className="navbar">
-      <img src="netflix-logo.png" alt="Netflix" className="nav-logo" />
       <div className="nav-links">
         <button onClick={() => navigate('/add-movie')} className="nav-button">
           Add Movie

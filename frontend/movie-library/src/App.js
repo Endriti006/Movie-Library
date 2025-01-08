@@ -11,13 +11,23 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/login" element={<LoginForm />} />
+                <Route 
+                    path="/" 
+                    element={isAuthenticated ? <Navigate to="/protected" /> : <Navigate to="/login" />} 
+                />
+                <Route 
+                    path="/login" 
+                    element={isAuthenticated ? <Navigate to="/protected" /> : <LoginForm />} 
+                />
                 <Route
                     path="/protected"
                     element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
                 />
-                <Route path="*" element={<Navigate to="/protected" />} />
-                <Route path="/add-movie" element={<MovieForm />} />
+                <Route 
+                    path="/add-movie" 
+                    element={isAuthenticated ? <MovieForm /> : <Navigate to="/login" />} 
+                />
+                <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Router>
     );
